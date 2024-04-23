@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
    <meta charset="UTF-8">
@@ -38,7 +38,7 @@
 
       <form action="" class="header__search">
          <i class="ri-search-line"></i>
-         <input type="search" placeholder="Search movies" class="header__input">
+         <input type="search" placeholder="Search..." class="header__input">
       </form>
    </header>
 
@@ -104,18 +104,10 @@
    <!--==================== DASHBOARD ====================-->
    <main class="main">
       <!--==================== BANNER ====================-->
-      <section class="banner">
-         <article class="banner__card">
-            <a href="#" class="banner__link">
-               <img src="" alt="image" class="banner__img">
-               <div class="banner__shadow"></div>
-
-               <div class="banner__data">
-                  <h2 class="banner__title"></h2>
-                  <span class="banner__category"></span>
-               </div>
-            </a>
-         </article>
+      <section id="banner" class="banner">
+         <div class="banner__swiper swiper">
+            <div id="banner_swiper_container" class=""></div>
+         </div>
       </section>
 
       <!--==================== Movies ====================-->
@@ -125,91 +117,17 @@
          <div class="movie__swiper swiper">
             <div id="movie_swiper_container" class="swiper-wrapper"></div>
          </div>
-         <div class="swiper-pagination"></div>
+
       </section>
 
       <!--==================== TV SHOW ====================-->
       <section class="tvshow">
          <h3 class="card__title">Séries</h3>
 
-         <div class="new__swiper swiper">
-            <div class="swiper-wrapper">
-               <article class="new__card card__article swiper-slide">
-                  <a href="#" class="card__link">
-                     <img src="" alt="image" class="card__img">
-                     <div class="card__shadow"></div>
-
-                     <div class="new__data card__data">
-                        <h3 class="card__name"></h3>
-                        <span class="card__category"></span>
-                     </div>
-                  </a>
-               </article>
-
-               <article class="new__card card__article swiper-slide">
-                  <a href="#" class="card__link">
-                     <img src="" alt="image" class="card__img">
-                     <div class="card__shadow"></div>
-
-                     <div class="new__data card__data">
-                        <h3 class="card__name"></h3>
-                        <span class="card__category"></span>
-                     </div>
-                  </a>
-               </article>
-
-               <article class="new__card card__article swiper-slide">
-                  <a href="#" class="card__link">
-                     <img src="" alt="image" class="card__img">
-                     <div class="card__shadow"></div>
-
-                     <div class="new__data card__data">
-                        <h3 class="card__name"></h3>
-                        <span class="card__category"></span>
-                     </div>
-                  </a>
-               </article>
-
-               <article class="new__card card__article swiper-slide">
-                  <a href="#" class="card__link">
-                     <img src="" alt="image" class="card__img">
-                     <div class="card__shadow"></div>
-
-                     <div class="new__data card__data">
-                        <h3 class="card__name"></h3>
-                        <span class="card__category"></span>
-                     </div>
-                  </a>
-               </article>
-
-               <article class="new__card card__article swiper-slide">
-                  <a href="#" class="card__link">
-                     <img src="" alt="image" class="card__img">
-                     <div class="card__shadow"></div>
-
-                     <div class="new__data card__data">
-                        <h3 class="card__name"></h3>
-                        <span class="card__category"></span>
-                     </div>
-                  </a>
-               </article>
-
-               <article class="new__card card__article swiper-slide">
-                  <a href="#" class="card__link">
-                     <img src="" alt="image" class="card__img">
-                     <div class="card__shadow"></div>
-
-                     <div class="new__data card__data">
-                        <h3 class="card__name"></h3>
-                        <span class="card__category"></span>
-                     </div>
-                  </a>
-               </article>
-            </div>
+         <div class="tvs__swiper swiper">
+            <div id="tvs_swiper_container" class="swiper-wrapper"></div>
          </div>
 
-         <!-- Pagination -->
-         <div class="swiper-pagination"></div>
       </section>
    </main>
 

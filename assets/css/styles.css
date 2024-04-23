@@ -351,22 +351,30 @@ img {
 .swiper {
   margin-inline: initial;
 }
+.movie__container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.movie__container > * {
+  flex-basis: 25%;
+  padding: 0.2rem;
+}
 
-/*=============== NEW ===============*/
-.new {
+/*=============== Media Queries for movies ===============*/
+@media screen and (max-width: 767px) {
+  .movie__container > * {
+    flex-basis: 50%;
+  }
+}
+
+/*=============== Tv shows ===============*/
+.tvshow {
   position: relative;
   display: grid;
 }
 
-.new__card {
-  scale: 0.8;
-  transition: scale 0.4s;
-}
 
-.new__data {
-  opacity: 0;
-  transition: opacity 0.4s;
-}
+
 
 /* Swiper class */
 .swiper-slide-active .new__data {
@@ -453,6 +461,7 @@ img {
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem 0 3rem;
+    background-color: rgb(31,30,30);
   }
   .header__search {
     order: -1;
