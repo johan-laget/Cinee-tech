@@ -1,4 +1,7 @@
 const apiKey = "8c4b867188ee47a1d4e40854b27391ec";
+const baseImgUrl = "https://image.tmdb.org/t/p/w500";
+const movieSwiperContainer = document.getElementById("movie_swiper_container");
+let movieGenres = [];
 
 /**
  * Retrieves a guest session token from the MovieDB API.
@@ -25,6 +28,34 @@ const getGuestToken = async () => {
  * @returns {Promise<Array>} An array of movie objects.
  * @throws {Error} If there is an HTTP error or an error occurs during the fetch.
  */
+
+const fetchMovieGenres = async () => {
+  const url = `https://api.themoviedb.org/3/genre/movie/list?language=en&api_key=8c4b867188ee47a1d4e40854b27391ec`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.genres;
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+    return [];
+  }
+};
+fetchMovieGenres()
+  .then((genres) => {
+    const genresArray = [];
+    for (let i = 0; i < genres.length; i++) {
+      genresArray.push(genres[i]);
+    }
+    movieGenres = genresArray;
+  })
+  .catch((error) => {
+    console.error("Error occurred: ", error);
+  });
+
 const fetchApiMovies = async () => {
   const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}`;
 
@@ -42,7 +73,55 @@ const fetchApiMovies = async () => {
 };
 fetchApiMovies()
   .then((movies) => {
-    for (let i = 0; i < movies.length; i++) {}
+    movies.forEach((movie, index) => {
+      // Create elements
+      const movieArticle = document.createElement("article");
+      movieArticle.className = "card__article swiper-slide";
+
+      const movieLink = document.createElement("a");
+      movieLink.classList.add("card__link");
+
+      const movieImg = document.createElement("img");
+      movieImg.classList.add("card__img");
+      movieImg.src = `${baseImgUrl}${movie.backdrop_path}`;
+      movieImg.alt = `${movie.title} image`;
+
+      const movieShadow = document.createElement("div");
+      movieShadow.classList.add("card__shadow");
+
+      const movieData = document.createElement("div");
+      movieData.classList.add("card__data");
+
+      const movieTitle = document.createElement("h3");
+      movieTitle.classList.add("card__name");
+      movieTitle.textContent = movie.title;
+
+      const movieCategory = document.createElement("span");
+      movieCategory.classList.add("card__category");
+      for (let i = 0; i < movie.genre_ids.length; i++) {
+        let genreToAdd = movieGenres.find(
+          (genre) => genre.id == movie.genre_ids[i]
+        );
+        movieCategory.textContent += ` ${genreToAdd.name}`;
+      }
+
+      const movieLikeIcon = document.createElement("i");
+      movieLikeIcon.classList.add("ri-heart-3-line", "card__like");
+
+      // Append elements
+      movieData.appendChild(movieTitle);
+      movieData.appendChild(movieCategory);
+
+      movieLink.appendChild(movieImg);
+      movieLink.appendChild(movieShadow);
+      movieLink.appendChild(movieData);
+      movieLink.appendChild(movieLikeIcon);
+
+      movieArticle.appendChild(movieLink);
+
+      movieSwiperContainer.appendChild(movieArticle);
+      console.log(movieCategory);
+    });
   })
   .catch((error) => {
     console.error("Error occurred: ", error);
