@@ -4,6 +4,9 @@
   box-sizing: border-box;
 }
 
+a:-webkit-any-link {
+  color: white;
+}
 body {
   margin: 0;
   font-family: Roboto, -apple-system, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
@@ -426,7 +429,7 @@ img {
 }
 
 .header__content {
-  gap: 1rem;
+  gap: 72rem;
   justify-content: space-between;
   align-items: center;
 }
@@ -746,11 +749,10 @@ img {
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem 0 3rem;
-    background-color: rgb(29 29 29);
+    background-color: rgb(37 37 37);
     justify-content: end;
   }
   .header__search {
-    order: -1;
     width: 450px;
   }
   .header__actions {
@@ -793,3 +795,11 @@ img {
     font-size: var(--normal-font-size);
   }
 }
+
+
+/* ***** */
+
+.container__header {
+  justify-content: center;
+}
+
