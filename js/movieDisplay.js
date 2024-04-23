@@ -1,5 +1,6 @@
 const genres = [];
 const movieContainer = document.getElementById("movie-container");
+const searchBar = document.getElementById("searchbar");
 fetchMovieGenres()
   .then((genres) => {
     const genresArray = [];
@@ -70,3 +71,34 @@ fetchApiMovies()
   .catch((error) => {
     console.error("Error fetching movies: ", error);
   });
+
+searchBar.addEventListener("keyup", (event) => {
+  if (searchBar.value === "") {
+    movieContainer.innerHTML = "";
+    fetchApiMovies()
+      .then((movies) => {
+        movies.forEach((movie) => {
+          // Create card for each movie
+          const movieCard = createMovieCard(movie);
+          // Append the card to the container
+          movieContainer.appendChild(movieCard);
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching movies: ", error);
+      });
+  } else {
+    movieContainer.innerHTML = "";
+    let searchTerm = searchBar.value;
+    fetchMoviesByTitle(searchTerm)
+      .then((movies) => {
+        movies.forEach((movie) => {
+          const movieCard = createMovieCard(movie);
+          movieContainer.appendChild(movieCard);
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching movies: ", error);
+      });
+  }
+});
