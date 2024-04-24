@@ -101,7 +101,7 @@ inputs.forEach((input) => {
         if (!isValidPassword(password)) {
           alert("Le mot de passe doit contenir au moins 6 caractères.");
         }
-      });
+      });   
       break;
     case "signup-password-confirm":
       input.addEventListener("blur", () => {
