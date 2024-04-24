@@ -113,6 +113,8 @@ fetchMovieGenres()
 
 fetchApiMovies()
   .then((movies) => {
+    movies.pop();
+    movies.pop();
     movies.forEach((movie) => {
       // Create elements
       const movieArticle = document.createElement("article");
@@ -225,6 +227,8 @@ fetchTvsGenres()
 
 fetchApiTvs()
   .then((Tvs) => {
+    Tvs.pop();
+    Tvs.pop();
     Tvs.forEach((tvs, index) => {
       // Create elements
       const tvsArticle = document.createElement("article");

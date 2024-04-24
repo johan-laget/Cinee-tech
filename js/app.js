@@ -140,14 +140,16 @@ const fetchTvsGenres = async () => {
   }
 };
 
-const fetchApiTvs = async () => {
-  const url = `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=fr&page=1&api_key=${apiKey}&sort_by=popularity.desc`;
+const fetchApiTvs = async (page = 1) => {
+  const url = `https://api.themoviedb.org/3/discover/tv?include_adult=false&language=fr&page=${page}&api_key=${apiKey}&sort_by=vote_count.desc`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
+    data.results.push(data.page);
+    data.results.push(data.total_pages);
     return data.results;
   } catch {
     console.error("Error fetching data: ", error);

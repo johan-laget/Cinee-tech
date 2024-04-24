@@ -1,4 +1,4 @@
-const movieContainer = document.getElementById("movie-container");
+const tvsContainer = document.getElementById("tvshow-container");
 const searchBar = document.getElementById("searchbar");
 let genres;
 let autoCompletion;
@@ -23,19 +23,20 @@ if (navClose) {
     nav.classList.remove("show-menu");
   });
 }
-const createMovieCard = (movie) => {
+
+const createTvsCard = (tvs) => {
   // Create elements for the card
   const cardArticle = document.createElement("article");
   cardArticle.classList.add("card__article");
 
   const cardLink = document.createElement("a");
   cardLink.classList.add("card__link");
-  cardLink.href = "#"; // You can set the href to link to the movie details page if available
+  cardLink.href = "#";
 
   const cardImg = document.createElement("img");
   cardImg.classList.add("card__img");
-  cardImg.src = `${baseImgUrl}${movie.poster_path}`;
-  cardImg.alt = movie.title; // Set alt text for accessibility
+  cardImg.src = `${baseImgUrl}${tvs.poster_path}`;
+  cardImg.alt = tvs.name;
 
   const cardShadow = document.createElement("div");
   cardShadow.classList.add("card__shadow");
@@ -45,12 +46,12 @@ const createMovieCard = (movie) => {
 
   const cardTitle = document.createElement("h3");
   cardTitle.classList.add("card__name");
-  cardTitle.textContent = movie.title;
+  cardTitle.textContent = tvs.name;
 
   const cardCategory = document.createElement("span");
   cardCategory.classList.add("card__category");
-  for (let i = 0; i < movie.genre_ids.length; i++) {
-    let genreToAdd = genres.find((genre) => genre.id == movie.genre_ids[i]);
+  for (let i = 0; i < tvs.genre_ids.length; i++) {
+    let genreToAdd = genres.find((genre) => genre.id == tvs.genre_ids[i]);
     cardCategory.textContent += ` ${genreToAdd.name}`;
   }
 
@@ -69,6 +70,7 @@ const createMovieCard = (movie) => {
   // Return the constructed card
   return cardArticle;
 };
+
 const renderPagination = () => {
   const paginationContainer = document.querySelector("#pagination");
   paginationContainer.innerHTML = "";
@@ -103,15 +105,16 @@ const renderPagination = () => {
     paginationContainer.appendChild(button);
   }
 };
+
 (async () => {
   try {
-    genres = await fetchMovieGenres();
-    let movies = await fetchApiMovies();
-    totalPages = movies.pop();
-    currentPage = movies.pop();
-    movies.forEach((movie) => {
-      const movieCard = createMovieCard(movie);
-      movieContainer.appendChild(movieCard);
+    genres = await fetchTvsGenres();
+    let tvs = await fetchApiTvs();
+    totalPages = tvs.pop();
+    currentPage = tvs.pop();
+    tvs.forEach((tv) => {
+      const tvsCard = createTvsCard(tv);
+      tvsContainer.appendChild(tvsCard);
     });
     const paginationContainer = document.querySelector("#pagination");
     paginationContainer.innerHTML = "";
@@ -130,19 +133,19 @@ const renderPagination = () => {
         const page = parseInt(event.target.dataset.page);
         currentPage = page;
         if (!isNaN(page)) {
-          fetchApiMovies(page)
-            .then((movies) => {
-              totalPages = movies.pop();
-              currentPage = movies.pop();
-              movieContainer.innerHTML = "";
-              movies.forEach((movie) => {
-                const movieCard = createMovieCard(movie);
-                movieContainer.appendChild(movieCard);
+          fetchApiTvs(page)
+            .then((tvs) => {
+              totalPages = tvs.pop();
+              currentPage = tvs.pop();
+              tvsContainer.innerHTML = "";
+              tvs.forEach((tv) => {
+                const tvsCard = createTvsCard(tv);
+                tvsContainer.appendChild(tvsCard);
               });
               renderPagination();
             })
             .catch((error) => {
-              console.error("Error fetching movies: ", error);
+              console.error("Error fetching tv shows: ", error);
             });
         }
       }
@@ -150,31 +153,29 @@ const renderPagination = () => {
 
     searchBar.addEventListener("keyup", (event) => {
       if (searchBar.value === "") {
-        movieContainer.innerHTML = "";
-        fetchApiMovies()
-          .then((movies) => {
-            movies.forEach((movie) => {
-              // Create card for each movie
-              const movieCard = createMovieCard(movie);
-              // Append the card to the container
-              movieContainer.appendChild(movieCard);
+        tvsContainer.innerHTML = "";
+        fetchApiTvs()
+          .then((tvs) => {
+            tvs.forEach((tv) => {
+              const tvsCard = createTvsCard(tv);
+              tvsContainer.appendChild(tvsCard);
             });
           })
           .catch((error) => {
-            console.error("Error fetching movies: ", error);
+            console.error("Error fetching Tv shows: ", error);
           });
       } else {
-        movieContainer.innerHTML = "";
+        tvsContainer.innerHTML = "";
         let searchTerm = searchBar.value;
-        fetchMoviesByTitle(searchTerm)
-          .then((movies) => {
-            movies.forEach((movie) => {
-              const movieCard = createMovieCard(movie);
-              movieContainer.appendChild(movieCard);
+        fetchTvsByTitle(searchTerm)
+          .then((tvs) => {
+            tvs.forEach((tv) => {
+              const tvsCard = createTvsCard(tv);
+              tvsContainer.appendChild(tvsCard);
             });
           })
           .catch((error) => {
-            console.error("Error fetching movies: ", error);
+            console.error("Error fetching tv shows: ", error);
           });
       }
     });
