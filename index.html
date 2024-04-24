@@ -5,7 +5,7 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-   <!--=============== REMIXICONS ===============-->
+   =============== REMIXICONS ===============
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
 
    <!--=============== SWIPER CSS ===============-->
@@ -23,26 +23,36 @@
    <header class="header" id="header">
       <a href="./index.html" class="header__logo">Netfloux</a>
       <form action="" class="header__search">
-         <i class="ri-search-line"></i>
-         <input type="search" placeholder="Search movies" class="header__input">
+          <i class="ri-search-line"></i>
+          <input type="search" placeholder="Search movies" class="header__input">
       </form>
-         <div class="container__header">
-            <div class="container__header__title">
-               <a href="./index.html" class="header__logo">Film</a>
-               <a href="./index.html" class="header__logo">Série</a>
-            </div>   
-         </div>
-         <div class="header__content"></div>
-         <div class="header__actions">
-            <a href="#" class="ri-notification-2-line"></a>
-            <a href="./profile.html" class="ri-account-circle-line"></a>
-
-            <div class="header__menu" id="header-menu">
-               <i class="ri-menu-line"></i>
-            </div>
-         </div>
+      <div class="container__header">
+          <div class="container__header__title">
+              <a href="./index.html" class="header__logo">Film</a>
+              <a href="./index.html" class="header__logo">Série</a>
+          </div>
       </div>
-   </header>
+      <div class="header__content">
+          <div id="user-info" style="display: none;">
+              <!-- Placeholder pour afficher le pseudo de l'utilisateur -->
+          </div>
+      </div>
+      <div class="header__actions">
+          <a href="#" class="ri-notification-2-line"></a>
+          <div class="header__menu" id="header-menu">
+              <i class="ri-menu-line"></i>
+          </div>
+          <div id="auth-buttons">
+              <!-- Placeholder pour afficher le lien vers le profil -->
+              <a href="./login.html" class="ri-account-circle-line"></a>
+          </div>
+          <div id="profile-buttons" style="display: none;">
+              <!-- Placeholder pour afficher le bouton de profil et de déconnexion -->
+              <input type="button" id="profile-button" value="Profile">
+              <input type="button" id="logout-button" value="Logout">
+          </div>
+      </div>
+  </header>
 
    <!--==================== NAV ====================-->
    <nav class="nav" id="nav">
@@ -69,7 +79,7 @@
          </div>
       </div>
 
-      <a href="#" class="nav__link">
+      <a  href="" class="nav__link">
          <i class="ri-logout-box-line"></i> <span>Log Out</span>
       </a>
 
@@ -95,6 +105,8 @@
    <!--=============== MAIN JS ===============-->
    <script src="assets/js/main.js"></script>
    <script src="assets/js/app.js"></script>
+   <script src="assets/js/login.js"></script>
+   <script src="assets/js/register.js"></script>
 </body>
 
 </html>

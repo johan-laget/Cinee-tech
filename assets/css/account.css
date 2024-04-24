@@ -29,7 +29,8 @@ body {
 .forms {
   display: flex;
   align-items: flex-start;
-  margin-top: 100px;
+  margin-top: 45px;
+  height: 86vh;
 }
 
 .form-wrapper {
@@ -291,7 +292,6 @@ body {
 
 .container {
   background: #424242;
-  height: 92vh;
 }
 
 /*=============== GOOGLE FONTS ===============*/

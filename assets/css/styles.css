@@ -73,6 +73,10 @@ input,
 button {
   border: none;
   outline: none;
+  cursor: pointer;
+}
+input:hover {
+  background-color: brown;
 }
 
 ul {

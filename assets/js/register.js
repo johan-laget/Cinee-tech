@@ -4,6 +4,7 @@ switchers.forEach(item => {
   item.addEventListener('click', function() {
     switchers.forEach(item => item.parentElement.classList.remove('is-active'));
     this.parentElement.classList.add('is-active');
+    
   });
 });
 
@@ -20,12 +21,22 @@ function isValidPassword(password) {
   return password.trim().length >= 6;
 }
 
+function isValidPseudo(pseudo) {
+  return pseudo.trim().length >= 3; // Au moins 3 caractères pour le pseudo
+}
+
 document.getElementById("signup-form").addEventListener("submit", function(event) {
   event.preventDefault();
 
+  var pseudo = document.getElementById("pseudo_input").value;
   var email = document.getElementById("signup-email").value;
   var password = document.getElementById("signup-password").value;
   var confirmPassword = document.getElementById("signup-password-confirm").value;
+
+  if (!isValidPseudo(pseudo)) {
+    alert("Veuillez saisir un pseudo valide (au moins 3 caractères).");
+    return;
+  }
 
   if (!isValidEmail(email)) {
     alert("Veuillez saisir une adresse e-mail valide.");
@@ -43,6 +54,7 @@ document.getElementById("signup-form").addEventListener("submit", function(event
   }
 
   var formData = {
+    pseudo: pseudo,
     email: email,
     password: password
   };
@@ -60,12 +72,21 @@ document.getElementById("signup-form").addEventListener("submit", function(event
   } else {
     user_records.push(formData);
     localStorage.setItem("users", JSON.stringify(user_records));
+    window.location.href = "login.html";
     alert("Utilisateur enregistré avec succès !");
   }
 });
 
 inputs.forEach((input) => {
   switch (input.id) {
+    case "pseudo_input":
+      input.addEventListener("blur", () => {
+        const pseudo = input.value;
+        if (!isValidPseudo(pseudo)) {
+          alert("Veuillez saisir un pseudo valide (au moins 3 caractères).");
+        }
+      });
+      break;
     case "signup-email":
       input.addEventListener("blur", () => {
         const email = input.value;

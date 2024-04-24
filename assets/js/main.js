@@ -1,3 +1,59 @@
+// Récupérer les informations de l'utilisateur connecté depuis le localStorage
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+// Sélectionner les éléments de l'en-tête
+const authButtons = document.getElementById("auth-buttons");
+const profileButtons = document.getElementById("profile-buttons");
+
+// Vérifier si l'utilisateur est connecté
+if (currentUser) {
+    // Masquer le bouton de connexion
+    authButtons.style.display = "none";
+
+    // Afficher les boutons de profil et de déconnexion
+    profileButtons.style.display = "block";
+
+    // Afficher le pseudo de l'utilisateur
+    const profileButton = document.getElementById("profile-button");
+    profileButton.value = currentUser.pseudo;
+} else {
+    // Afficher le bouton de connexion
+    authButtons.style.display = "block";
+
+    // Masquer les boutons de profil et de déconnexion
+    profileButtons.style.display = "none";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*=============== SHOW MENU ===============*/
 const nav = document.getElementById('nav'),
       headerMenu = document.getElementById('header-menu'),
@@ -73,3 +129,6 @@ const blurHeader = () =>{
                       : header.classList.remove('blur-header')
 }
 window.addEventListener('scroll', blurHeader)
+
+
+
