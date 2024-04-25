@@ -1,7 +1,6 @@
 const movieContainer = document.getElementById("movie-container");
 const searchBar = document.getElementById("searchbar");
 let genres;
-let autoCompletion;
 let totalPages;
 let currentPage;
 
@@ -24,18 +23,17 @@ if (navClose) {
   });
 }
 const createMovieCard = (movie) => {
-  // Create elements for the card
   const cardArticle = document.createElement("article");
   cardArticle.classList.add("card__article");
 
   const cardLink = document.createElement("a");
   cardLink.classList.add("card__link");
-  cardLink.href = "#"; // You can set the href to link to the movie details page if available
+  cardLink.href = "#"; // Link to modal here
 
   const cardImg = document.createElement("img");
   cardImg.classList.add("card__img");
   cardImg.src = `${baseImgUrl}${movie.poster_path}`;
-  cardImg.alt = movie.title; // Set alt text for accessibility
+  cardImg.alt = movie.title;
 
   const cardShadow = document.createElement("div");
   cardShadow.classList.add("card__shadow");
@@ -66,16 +64,13 @@ const createMovieCard = (movie) => {
 
   cardArticle.appendChild(cardLink);
 
-  // Return the constructed card
   return cardArticle;
 };
 const renderPagination = () => {
   const paginationContainer = document.querySelector("#pagination");
   paginationContainer.innerHTML = "";
 
-  // Calculate the starting page number for the previous three pages
   const startPagePrev = Math.max(currentPage - 3, 1);
-  // Calculate the ending page number for the previous three pages
   const endPagePrev = Math.min(currentPage - 1, totalPages);
 
   for (let i = startPagePrev; i <= endPagePrev; i++) {
@@ -84,16 +79,13 @@ const renderPagination = () => {
     button.dataset.page = i;
     paginationContainer.appendChild(button);
   }
-  // Create button for current page
   const currentButton = document.createElement("button");
   currentButton.textContent = currentPage;
   currentButton.dataset.page = currentPage;
   currentButton.classList.add("active");
   paginationContainer.appendChild(currentButton);
 
-  // Calculate the starting page number for the next three pages
   const startPageNext = currentPage + 1;
-  // Calculate the ending page number for the next three pages
   const endPageNext = Math.min(currentPage + 3, totalPages);
 
   for (let i = startPageNext; i <= endPageNext; i++) {
@@ -148,34 +140,35 @@ const renderPagination = () => {
       }
     });
 
-    searchBar.addEventListener("keyup", (event) => {
-      if (searchBar.value === "") {
+    searchBar.addEventListener("keyup", async (event) => {
+      const searchTerm = event.target.value.trim();
+      if (!searchTerm) {
         movieContainer.innerHTML = "";
-        fetchApiMovies()
-          .then((movies) => {
-            movies.forEach((movie) => {
-              // Create card for each movie
-              const movieCard = createMovieCard(movie);
-              // Append the card to the container
-              movieContainer.appendChild(movieCard);
-            });
-          })
-          .catch((error) => {
-            console.error("Error fetching movies: ", error);
+        try {
+          const movies = await fetchApiMovies();
+          totalPages = movies.pop();
+          currentPage = movies.pop();
+          movies.forEach((movie) => {
+            const movieCard = createMovieCard(movie);
+            movieContainer.appendChild(movieCard);
           });
+          renderPagination();
+        } catch (error) {
+          console.error("Error fetching movies: ", error);
+        }
       } else {
-        movieContainer.innerHTML = "";
-        let searchTerm = searchBar.value;
-        fetchMoviesByTitle(searchTerm)
-          .then((movies) => {
-            movies.forEach((movie) => {
-              const movieCard = createMovieCard(movie);
-              movieContainer.appendChild(movieCard);
-            });
-          })
-          .catch((error) => {
-            console.error("Error fetching movies: ", error);
+        try {
+          const movies = await fetchMoviesByTitle(searchTerm);
+          movieContainer.innerHTML = "";
+          movies.forEach((movie) => {
+            const movieCard = createMovieCard(movie);
+            movieContainer.appendChild(movieCard);
           });
+          const movieTitles = movies.map((movie) => movie.title);
+          autocomplete(searchBar, movieTitles);
+        } catch (error) {
+          console.error("Error fetching movies by title: ", error);
+        }
       }
     });
   } catch (error) {

@@ -151,32 +151,33 @@ const renderPagination = () => {
       }
     });
 
-    searchBar.addEventListener("keyup", (event) => {
-      if (searchBar.value === "") {
+    searchBar.addEventListener("keyup", async (event) => {
+      const searchTerm = event.target.value.trim();
+      if (!searchTerm) {
         tvsContainer.innerHTML = "";
-        fetchApiTvs()
-          .then((tvs) => {
-            tvs.forEach((tv) => {
-              const tvsCard = createTvsCard(tv);
-              tvsContainer.appendChild(tvsCard);
-            });
-          })
-          .catch((error) => {
-            console.error("Error fetching Tv shows: ", error);
+        try {
+          const tvs = await fetchApiTvs();
+          totalPages = tvs.pop();
+          currentPage = tvs.pop();
+          tvs.forEach((tv) => {
+            const tvsCard = createTvsCard(tv);
+            tvsContainer.appendChild(tvsCard);
           });
+          renderPagination();
+        } catch (error) {
+          console.error("Error fetching tv shows: ", error);
+        }
       } else {
+        const tvs = await fetchTvsByTitle(searchTerm);
+        tvs.pop();
+        tvs.pop();
         tvsContainer.innerHTML = "";
-        let searchTerm = searchBar.value;
-        fetchTvsByTitle(searchTerm)
-          .then((tvs) => {
-            tvs.forEach((tv) => {
-              const tvsCard = createTvsCard(tv);
-              tvsContainer.appendChild(tvsCard);
-            });
-          })
-          .catch((error) => {
-            console.error("Error fetching tv shows: ", error);
-          });
+        tvs.forEach((tv) => {
+          const tvsCard = createTvsCard(tv);
+          tvsContainer.appendChild(tvsCard);
+        });
+        const tvsTitles = tvs.map((tv) => tv.name);
+        autocomplete(searchBar, tvsTitles);
       }
     });
   } catch (error) {

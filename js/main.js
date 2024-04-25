@@ -56,34 +56,6 @@ let swiperTvShows = new Swiper(".tvs__swiper", {
   },
 });
 
-/*=============== SWIPER NEW ===============*/
-// let swiperNew = new Swiper(".new__swiper", {
-//   loop: true,
-//   grabCursor: true,
-//   centeredSlides: true,
-//   slidesPerView: 2,
-
-//   pagination: {
-//     el: ".swiper-pagination",
-//     clickable: true,
-//   },
-
-//   breakpoints: {
-//     440: {
-//       centeredSlides: false,
-//       slidesPerView: "auto",
-//     },
-//     768: {
-//       centeredSlides: false,
-//       slidesPerView: 4,
-//     },
-//     1200: {
-//       centeredSlides: false,
-//       slidesPerView: 5,
-//     },
-//   },
-// });
-
 /*=============== ADD BLUR HEADER ===============*/
 const blurHeader = () => {
   const header = document.getElementById("header");
@@ -171,6 +143,7 @@ fetchApiMovies()
 fetchUpcomingMovies()
   .then((movies) => {
     for (i = 0; i < 1; i++) {
+      console.log(movies);
       const bannerArticle = document.createElement("article");
       bannerArticle.className = "banner__card";
 
@@ -179,7 +152,7 @@ fetchUpcomingMovies()
 
       const bannerImg = document.createElement("img");
       bannerImg.className = "banner__img";
-      bannerImg.src = `${baseImgUrl}${movies[i].backdrop_path}`;
+      bannerImg.src = `${baseImgUrl}${movies[i].poster_path}`;
 
       const bannerShadow = document.createElement("div");
       bannerShadow.className = "banner__shadow";
