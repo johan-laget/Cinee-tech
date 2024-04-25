@@ -1,6 +1,7 @@
 const emailInput = document.getElementById("email_input");
 const passwordInput = document.getElementById("password_input");
 
+
 document.getElementById("logInForm").addEventListener("submit", function (event) {
     event.preventDefault();
     const email = emailInput.value;
@@ -15,11 +16,4 @@ document.getElementById("logInForm").addEventListener("submit", function (event)
     } else {
         alert("Log in failed");
     }
-});
-
-const logoutButton = document.getElementById("logout-button");
-
-logoutButton.addEventListener("click", function() {
-  localStorage.removeItem("currentUser");
-  window.location.href = "./index.html";
 });
