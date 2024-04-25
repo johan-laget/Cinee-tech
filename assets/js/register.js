@@ -22,7 +22,7 @@ function isValidPassword(password) {
 }
 
 function isValidPseudo(pseudo) {
-  return pseudo.trim().length >= 3; // Au moins 3 caractères pour le pseudo
+  return pseudo.trim().length >= 3;
 }
 
 document.getElementById("signup-form").addEventListener("submit", function(event) {

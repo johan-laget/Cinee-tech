@@ -1,79 +1,33 @@
-// Récupérer les informations de l'utilisateur connecté depuis le localStorage
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-// Sélectionner les éléments de l'en-tête
 const authButtons = document.getElementById("auth-buttons");
 const profileButtons = document.getElementById("profile-buttons");
 
-// Vérifier si l'utilisateur est connecté
 if (currentUser) {
-    // Masquer le bouton de connexion
     authButtons.style.display = "none";
-
-    // Afficher les boutons de profil et de déconnexion
     profileButtons.style.display = "block";
-
-    // Afficher le pseudo de l'utilisateur
     const profileButton = document.getElementById("profile-button");
     profileButton.value = currentUser.pseudo;
 } else {
-    // Afficher le bouton de connexion
     authButtons.style.display = "block";
-
-    // Masquer les boutons de profil et de déconnexion
     profileButtons.style.display = "none";
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*=============== SHOW MENU ===============*/
 const nav = document.getElementById('nav'),
       headerMenu = document.getElementById('header-menu'),
       navClose = document.getElementById('nav-close')
 
-/* Menu show */
 if(headerMenu){
    headerMenu.addEventListener('click', () =>{
       nav.classList.add('show-menu')
    })
 }
 
-/* Menu hidden */
 if(navClose){
     navClose.addEventListener('click', () =>{
       nav.classList.remove('show-menu')
    })
 }
 
-/*=============== SWIPER MOVIE ===============*/
 let swiperMovie = new Swiper('.movie__swiper', {
    loop: true,
    grabCursor: true,
@@ -93,7 +47,6 @@ let swiperMovie = new Swiper('.movie__swiper', {
    },
 })
 
-/*=============== SWIPER NEW ===============*/
 let swiperNew = new Swiper('.new__swiper', {
    loop: true,
    grabCursor: true,
@@ -121,14 +74,9 @@ let swiperNew = new Swiper('.new__swiper', {
    },
 })
 
-/*=============== ADD BLUR HEADER ===============*/
 const blurHeader = () =>{
    const header = document.getElementById('header')
-   // Add a class if the bottom offset is greater than 50 of the viewport
    this.scrollY >= 50 ? header.classList.add('blur-header') 
                       : header.classList.remove('blur-header')
 }
 window.addEventListener('scroll', blurHeader)
-
-
-
