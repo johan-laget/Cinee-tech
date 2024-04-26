@@ -1,5 +1,12 @@
+const switchers = [...document.querySelectorAll('.switcher')];
 
-
+switchers.forEach(item => {
+  item.addEventListener('click', function() {
+    switchers.forEach(item => item.parentElement.classList.remove('is-active'));
+    this.parentElement.classList.add('is-active');
+    
+  });
+});
 //**************************************register******************************************* //
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const inputs = document.querySelectorAll("input");
@@ -14,7 +21,7 @@ function isValidPassword(password) {
 }
 
 function isValidPseudo(pseudo) {
-  return pseudo.trim().length >= 3;
+  return pseudo.trim().length >= 3; // Au moins 3 caractères pour le pseudo
 }
 
 document.getElementById("signup-form").addEventListener("submit", function(event) {
@@ -93,7 +100,7 @@ inputs.forEach((input) => {
         if (!isValidPassword(password)) {
           alert("Le mot de passe doit contenir au moins 6 caractères.");
         }
-      });   
+      });
       break;
     case "signup-password-confirm":
       input.addEventListener("blur", () => {
@@ -105,4 +112,23 @@ inputs.forEach((input) => {
       });
       break;
   }
+});
+
+const emailInput = document.getElementById("email_input");
+const passwordInput = document.getElementById("password_input");
+
+document.getElementById("logInForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    const user_record = JSON.parse(localStorage.getItem("users")) || [];
+    const currentUser = user_record.find((user) => user.email === email && user.password === password);
+    if (currentUser) {
+        alert("You're logged in");
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        window.location.href = "index.html";
+    } else {
+        alert("Log in failed");
+    }
 });

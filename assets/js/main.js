@@ -1,17 +1,13 @@
-
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 const authButtons = document.getElementById("auth-buttons");
 const profileButtons = document.getElementById("profile-buttons");
-
 const logOutBtn = document.getElementById("logOutBtn");
-
 if (currentUser) {
    logOutBtn.addEventListener("click", function() {
     localStorage.removeItem("currentUser");
     window.location.href = "./index.html";
     });
 }
-
 if (currentUser) {
     authButtons.style.display = "none";
     profileButtons.style.display = "block";
@@ -21,7 +17,6 @@ if (currentUser) {
     authButtons.style.display = "block";
     profileButtons.style.display = "none";
 }
-
 
 /*=============== SHOW MENU ===============*/
 const nav = document.getElementById("nav"),
