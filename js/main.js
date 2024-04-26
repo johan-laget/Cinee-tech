@@ -116,7 +116,6 @@ fetchApiMovies()
     movies.pop();
     movies.pop();
     movies.forEach((movie) => {
-      console.log(movie);
       // Create elements
       const movieArticle = document.createElement("article");
       movieArticle.className = "card__article swiper-slide";
@@ -188,13 +187,9 @@ fetchApiTvs()
 
       const tvsLikeIcon = document.createElement("i");
       tvsLikeIcon.classList.add("ri-heart-3-line", "card__like");
-      // console.log(tvsCategory);
-
-      // Append elements
 
       tvsLink.appendChild(tvsImg);
       tvsLink.appendChild(tvsShadow);
-      tvsLink.appendChild(tvsData);
       tvsLink.appendChild(tvsLikeIcon);
 
       tvsArticle.appendChild(tvsLink);
