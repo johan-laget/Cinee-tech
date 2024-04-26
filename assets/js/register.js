@@ -1,12 +1,4 @@
-const switchers = [...document.querySelectorAll('.switcher')];
 
-switchers.forEach(item => {
-  item.addEventListener('click', function() {
-    switchers.forEach(item => item.parentElement.classList.remove('is-active'));
-    this.parentElement.classList.add('is-active');
-    
-  });
-});
 
 //**************************************register******************************************* //
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
