@@ -132,22 +132,13 @@ fetchApiMovies()
       const movieShadow = document.createElement("div");
       movieShadow.classList.add("card__shadow");
 
-      const movieData = document.createElement("div");
-      movieData.classList.add("card__data");
-
-      const movieTitle = document.createElement("h3");
-      movieTitle.classList.add("card__name");
-      movieTitle.textContent = movie.title;
-
       const movieLikeIcon = document.createElement("i");
       movieLikeIcon.classList.add("ri-heart-3-line", "card__like");
 
       // Append elements
-      movieData.appendChild(movieTitle);
 
       movieLink.appendChild(movieImg);
       movieLink.appendChild(movieShadow);
-      movieLink.appendChild(movieData);
       movieLink.appendChild(movieLikeIcon);
 
       movieArticle.appendChild(movieLink);
@@ -195,19 +186,11 @@ fetchApiTvs()
       const tvsShadow = document.createElement("div");
       tvsShadow.classList.add("card__shadow");
 
-      const tvsData = document.createElement("div");
-      tvsData.className = "new__data card__data";
-
-      const tvsTitle = document.createElement("h3");
-      tvsTitle.classList.add("card__name");
-      tvsTitle.textContent = tvs.name;
-
       const tvsLikeIcon = document.createElement("i");
       tvsLikeIcon.classList.add("ri-heart-3-line", "card__like");
       // console.log(tvsCategory);
 
       // Append elements
-      tvsData.appendChild(tvsTitle);
 
       tvsLink.appendChild(tvsImg);
       tvsLink.appendChild(tvsShadow);

@@ -41,20 +41,11 @@ const createTvsCard = (tvs) => {
   const cardShadow = document.createElement("div");
   cardShadow.classList.add("card__shadow");
 
-  const cardData = document.createElement("div");
-  cardData.classList.add("card__data");
-
-  const cardTitle = document.createElement("h3");
-  cardTitle.classList.add("card__name");
-  cardTitle.textContent = tvs.name;
-
   const cardLikeIcon = document.createElement("i");
   cardLikeIcon.classList.add("ri-heart-3-line", "card__like");
 
-  cardData.appendChild(cardTitle);
   cardLink.appendChild(cardImg);
   cardLink.appendChild(cardShadow);
-  cardLink.appendChild(cardData);
   cardLink.appendChild(cardLikeIcon);
 
   cardArticle.appendChild(cardLink);

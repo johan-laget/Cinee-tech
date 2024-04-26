@@ -23,42 +23,76 @@ if (navClose) {
     nav.classList.remove("show-menu");
   });
 }
+const createModal = (movie) => {
+  const modalBackdrop = document.createElement("div");
+  modalBackdrop.classList.add("modal-backdrop");
+
+  const modalContent = document.createElement("div");
+  modalContent.classList.add("modal-content");
+
+  const modalCloseBtn = document.createElement("span");
+  modalCloseBtn.classList.add("modal-close-btn");
+  modalCloseBtn.innerHTML = "&times;";
+
+  const modalTitle = document.createElement("h2");
+  modalTitle.classList.add("modal-title");
+  modalTitle.textContent = movie.title;
+
+  const modalDescription = document.createElement("p");
+  modalDescription.classList.add("modal-description");
+  modalDescription.textContent = movie.overview;
+
+  modalContent.appendChild(modalCloseBtn);
+  modalContent.appendChild(modalTitle);
+  modalContent.appendChild(modalDescription);
+  modalBackdrop.appendChild(modalContent);
+
+  document.body.appendChild(modalBackdrop);
+
+  modalCloseBtn.addEventListener("click", () => {
+    document.body.removeChild(modalBackdrop);
+  });
+
+  modalContent.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  modalBackdrop.addEventListener("click", () => {
+    document.body.removeChild(modalBackdrop);
+  });
+};
+
 const createMovieCard = (movie) => {
-  // Create elements for the card
   const cardArticle = document.createElement("article");
   cardArticle.classList.add("card__article");
 
   const cardLink = document.createElement("a");
   cardLink.classList.add("card__link");
-  cardLink.href = "#"; // You can set the href to link to the movie details page if available
+  cardLink.href = "#";
 
   const cardImg = document.createElement("img");
   cardImg.classList.add("card__img");
   cardImg.src = `${baseImgUrl}${movie.poster_path}`;
-  cardImg.alt = movie.title; // Set alt text for accessibility
+  cardImg.alt = movie.title;
 
   const cardShadow = document.createElement("div");
   cardShadow.classList.add("card__shadow");
 
-  const cardData = document.createElement("div");
-  cardData.classList.add("card__data");
-
-  const cardTitle = document.createElement("h3");
-  cardTitle.classList.add("card__name");
-  cardTitle.textContent = movie.title;
-
   const cardLikeIcon = document.createElement("i");
   cardLikeIcon.classList.add("ri-heart-3-line", "card__like");
 
-  cardData.appendChild(cardTitle);
+  cardShadow.addEventListener("click", () => {
+    console.log("hello");
+    createModal(movie);
+  });
+  console.log("card create");
+
   cardLink.appendChild(cardImg);
   cardLink.appendChild(cardShadow);
-  cardLink.appendChild(cardData);
   cardLink.appendChild(cardLikeIcon);
 
   cardArticle.appendChild(cardLink);
 
-  // Return the constructed card
   return cardArticle;
 };
 const renderPagination = () => {
