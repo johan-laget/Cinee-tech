@@ -43,14 +43,13 @@ const createMovieCard = (movie) => {
 
   const cardTitle = document.createElement("h3");
   cardTitle.classList.add("card__name");
-  cardTitle.textContent = movie.title;
 
   const cardCategory = document.createElement("span");
   cardCategory.classList.add("card__category");
-  for (let i = 0; i < movie.genre_ids.length; i++) {
-    let genreToAdd = genres.find((genre) => genre.id == movie.genre_ids[i]);
-    cardCategory.textContent += ` ${genreToAdd.name}`;
-  }
+  // for (let i = 0; i < movie.genre_ids.length; i++) {
+  //   let genreToAdd = genres.find((genre) => genre.id == movie.genre_ids[i]);
+  //   cardCategory.textContent += ` ${genreToAdd.name}`;
+  // }
 
   const cardLikeIcon = document.createElement("i");
   cardLikeIcon.classList.add("ri-heart-3-line", "card__like");
@@ -117,28 +116,6 @@ const renderPagination = () => {
       button.dataset.page = i;
       paginationContainer.appendChild(button);
     }
-    document.querySelector("#pagination").addEventListener("click", (event) => {
-      if (event.target.tagName === "BUTTON") {
-        const page = parseInt(event.target.dataset.page);
-        currentPage = page;
-        if (!isNaN(page)) {
-          fetchApiMovies(page)
-            .then((movies) => {
-              totalPages = movies.pop();
-              currentPage = movies.pop();
-              movieContainer.innerHTML = "";
-              movies.forEach((movie) => {
-                const movieCard = createMovieCard(movie);
-                movieContainer.appendChild(movieCard);
-              });
-              renderPagination();
-            })
-            .catch((error) => {
-              console.error("Error fetching movies: ", error);
-            });
-        }
-      }
-    });
 
     searchBar.addEventListener("keyup", async (event) => {
       const searchTerm = event.target.value.trim();
@@ -171,6 +148,52 @@ const renderPagination = () => {
         }
       }
     });
+    document
+      .querySelector("#pagination")
+      .addEventListener("click", async (event) => {
+        if (searchBar.value.trim() !== "") {
+          if (event.target.tagName === "BUTTON") {
+            const page = parseInt(event.target.dataset.page);
+            currentPage = page;
+            if (!isNaN(page)) {
+              try {
+                const searchTerm = searchBar.value.trim();
+                const movies = await fetchMoviesByTitle(searchTerm, page);
+                totalPages = movies.pop();
+                currentPage = movies.pop();
+                movieContainer.innerHTML = "";
+                movies.forEach((movie) => {
+                  const movieCard = createMovieCard(movie);
+                  movieContainer.appendChild(movieCard);
+                });
+                renderPagination();
+              } catch (error) {
+                console.error("Error fetching movies: ", error);
+              }
+            }
+          }
+        } else {
+          if (event.target.tagName === "BUTTON") {
+            const page = parseInt(event.target.dataset.page);
+            currentPage = page;
+            if (!isNaN(page)) {
+              try {
+                const movies = await fetchApiMovies(page);
+                totalPages = movies.pop();
+                currentPage = movies.pop();
+                movieContainer.innerHTML = "";
+                movies.forEach((movie) => {
+                  const movieCard = createMovieCard(movie);
+                  movieContainer.appendChild(movieCard);
+                });
+                renderPagination();
+              } catch (error) {
+                console.error("Error fetching movies: ", error);
+              }
+            }
+          }
+        }
+      });
   } catch (error) {
     console.error("Error fetching genres: ", error);
   }

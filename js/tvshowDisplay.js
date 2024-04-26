@@ -128,28 +128,6 @@ const renderPagination = () => {
       button.dataset.page = i;
       paginationContainer.appendChild(button);
     }
-    document.querySelector("#pagination").addEventListener("click", (event) => {
-      if (event.target.tagName === "BUTTON") {
-        const page = parseInt(event.target.dataset.page);
-        currentPage = page;
-        if (!isNaN(page)) {
-          fetchApiTvs(page)
-            .then((tvs) => {
-              totalPages = tvs.pop();
-              currentPage = tvs.pop();
-              tvsContainer.innerHTML = "";
-              tvs.forEach((tv) => {
-                const tvsCard = createTvsCard(tv);
-                tvsContainer.appendChild(tvsCard);
-              });
-              renderPagination();
-            })
-            .catch((error) => {
-              console.error("Error fetching tv shows: ", error);
-            });
-        }
-      }
-    });
 
     searchBar.addEventListener("keyup", async (event) => {
       const searchTerm = event.target.value.trim();
@@ -180,6 +158,52 @@ const renderPagination = () => {
         autocomplete(searchBar, tvsTitles);
       }
     });
+    document
+      .querySelector("#pagination")
+      .addEventListener("click", async (event) => {
+        if (searchBar.value.trim() !== "") {
+          if (event.target.tagName === "BUTTON") {
+            const page = parseInt(event.target.dataset.page);
+            currentPage = page;
+            if (!isNaN(page)) {
+              try {
+                const searchTerm = searchBar.value.trim();
+                const tvs = await fetchTvsByTitle(searchTerm, page);
+                totalPages = tvs.pop();
+                currentPage = tvs.pop();
+                tvsContainer.innerHTML = "";
+                tvs.forEach((tv) => {
+                  const tvsCard = createTvsCard(tv);
+                  tvsContainer.appendChild(tvsCard);
+                });
+                renderPagination();
+              } catch (error) {
+                console.log("Error fetching tv shows: ", error);
+              }
+            }
+          }
+        } else {
+          if (event.target.tagName === "BUTTON") {
+            const page = parseInt(event.target.dataset.page);
+            currentPage = page;
+            if (!isNaN(page)) {
+              try {
+                const tvs = await fetchApiTvs(page);
+                totalPages = tvs.pop();
+                currentPage = tvs.pop();
+                tvsContainer.innerHTML = "";
+                tvs.forEach((tv) => {
+                  const tvsCard = createTvsCard(tv);
+                  tvsContainer.appendChild(tvsCard);
+                });
+                renderPagination();
+              } catch (error) {
+                console.log("Error fetching tv shows: ", error);
+              }
+            }
+          }
+        }
+      });
   } catch (error) {
     console.error("Error fetching genres: ", error);
   }

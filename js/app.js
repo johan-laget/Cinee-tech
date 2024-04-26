@@ -1,4 +1,4 @@
-const apiKey = "8c4b867188ee47a1d4e40854b27391ec";
+const apiKey = "a83208ec54e76d423589b29725376c66";
 const baseImgUrl = "https://image.tmdb.org/t/p/w400";
 
 /**
@@ -81,8 +81,8 @@ const fetchUpcomingMovies = async () => {
  * @param {string} searchTerm - The term to search for movies.
  * @returns {Promise<Array>} - An array of movie objects that match the search term. If there is an error during the API request, an empty array is returned.
  */
-const fetchMoviesByTitle = async (searchTerm) => {
-  const url = `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&include_adult=false&language=fr&page=1&api_key=${apiKey}`;
+const fetchMoviesByTitle = async (searchTerm, page = 1) => {
+  const url = `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&include_adult=false&language=fr&page=${page}&api_key=${apiKey}`;
 
   try {
     const response = await fetch(url);
@@ -182,8 +182,8 @@ const fetchTvsById = async (id) => {
  * @param {string} searchTerm - The term to search for tv shows.
  * @returns {Promise<Array>} - An array of tv shows objects that match the search term. If there is an error during the API request, an empty array is returned.
  */
-const fetchTvsByTitle = async (searchTerm) => {
-  const url = `https://api.themoviedb.org/3/search/tv?query=${searchTerm}&include_adult=false&language=fr&page=1&api_key=${apiKey}`;
+const fetchTvsByTitle = async (searchTerm, page = 1) => {
+  const url = `https://api.themoviedb.org/3/search/tv?query=${searchTerm}&include_adult=false&language=fr&page=${page}&api_key=${apiKey}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
