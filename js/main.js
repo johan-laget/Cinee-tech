@@ -56,6 +56,34 @@ let swiperTvShows = new Swiper(".tvs__swiper", {
   },
 });
 
+/*=============== SWIPER NEW ===============*/
+// let swiperNew = new Swiper(".new__swiper", {
+//   loop: true,
+//   grabCursor: true,
+//   centeredSlides: true,
+//   slidesPerView: 2,
+
+//   pagination: {
+//     el: ".swiper-pagination",
+//     clickable: true,
+//   },
+
+//   breakpoints: {
+//     440: {
+//       centeredSlides: false,
+//       slidesPerView: "auto",
+//     },
+//     768: {
+//       centeredSlides: false,
+//       slidesPerView: 4,
+//     },
+//     1200: {
+//       centeredSlides: false,
+//       slidesPerView: 5,
+//     },
+//   },
+// });
+
 /*=============== ADD BLUR HEADER ===============*/
 const blurHeader = () => {
   const header = document.getElementById("header");
@@ -103,32 +131,13 @@ fetchApiMovies()
       const movieShadow = document.createElement("div");
       movieShadow.classList.add("card__shadow");
 
-      const movieData = document.createElement("div");
-      movieData.classList.add("card__data");
-
-      const movieTitle = document.createElement("h3");
-      movieTitle.classList.add("card__name");
-      movieTitle.textContent = movie.title;
-
-      const movieCategory = document.createElement("span");
-      movieCategory.classList.add("card__category");
-      for (let i = 0; i < movie.genre_ids.length; i++) {
-        let genreToAdd = movieGenres.find(
-          (genre) => genre.id == movie.genre_ids[i]
-        );
-        movieCategory.textContent += ` ${genreToAdd.name}`;
-      }
-
       const movieLikeIcon = document.createElement("i");
       movieLikeIcon.classList.add("ri-heart-3-line", "card__like");
 
       // Append elements
-      movieData.appendChild(movieTitle);
-      movieData.appendChild(movieCategory);
 
       movieLink.appendChild(movieImg);
       movieLink.appendChild(movieShadow);
-      movieLink.appendChild(movieData);
       movieLink.appendChild(movieLikeIcon);
 
       movieArticle.appendChild(movieLink);
@@ -140,51 +149,9 @@ fetchApiMovies()
     console.error("Error occurred: ", error);
   });
 
-fetchUpcomingMovies()
-  .then((movies) => {
-    for (i = 0; i < 1; i++) {
-      console.log(movies);
-      const bannerArticle = document.createElement("article");
-      bannerArticle.className = "banner__card";
-
-      const bannerLink = document.createElement("a");
-      bannerLink.className = "banner__link";
-
-      const bannerImg = document.createElement("img");
-      bannerImg.className = "banner__img";
-      bannerImg.src = `${baseImgUrl}${movies[i].poster_path}`;
-
-      const bannerShadow = document.createElement("div");
-      bannerShadow.className = "banner__shadow";
-
-      const bannerData = document.createElement("div");
-      bannerData.className = "banner__data";
-
-      const bannerTitle = document.createElement("h2");
-      bannerTitle.className = "banner__title";
-      bannerTitle.textContent = movies[i].title;
-
-      const bannerCategory = document.createElement("span");
-      bannerCategory.className = "banner__category";
-      for (let i = 0; i < movies[i].genre_ids.length; i++) {
-        let genreToAdd = movieGenres.find(
-          (genre) => genre.id == movies[i].genre_ids[i]
-        );
-        bannerCategory.textContent += ` ${genreToAdd.name}`;
-      }
-
-      bannerData.appendChild(bannerCategory);
-      bannerData.appendChild(bannerTitle);
-      bannerLink.appendChild(bannerData);
-      bannerLink.appendChild(bannerImg);
-      bannerLink.appendChild(bannerShadow);
-      bannerArticle.appendChild(bannerLink);
-      bannerContainer.appendChild(bannerArticle);
-    }
-  })
-  .catch((error) => {
-    console.error("Error occurred: ", error);
-  });
+fetchVideoMovies().then((video) => {
+  console.log(video);
+});
 
 fetchTvsGenres()
   .then((genres) => {
@@ -218,33 +185,11 @@ fetchApiTvs()
       const tvsShadow = document.createElement("div");
       tvsShadow.classList.add("card__shadow");
 
-      const tvsData = document.createElement("div");
-      tvsData.className = "new__data card__data";
-
-      const tvsTitle = document.createElement("h3");
-      tvsTitle.classList.add("card__name");
-      tvsTitle.textContent = tvs.name;
-
-      const tvsCategory = document.createElement("span");
-      tvsCategory.classList.add("card__category");
-      for (let i = 0; i < tvs.genre_ids.length; i++) {
-        let genreToAdd = tvsGenres.find(
-          (genre) => genre.id == tvs.genre_ids[i]
-        );
-        tvsCategory.textContent += ` ${genreToAdd.name}`;
-      }
-
       const tvsLikeIcon = document.createElement("i");
       tvsLikeIcon.classList.add("ri-heart-3-line", "card__like");
-      // console.log(tvsCategory);
-
-      // Append elements
-      tvsData.appendChild(tvsTitle);
-      tvsData.appendChild(tvsCategory);
 
       tvsLink.appendChild(tvsImg);
       tvsLink.appendChild(tvsShadow);
-      tvsLink.appendChild(tvsData);
       tvsLink.appendChild(tvsLikeIcon);
 
       tvsArticle.appendChild(tvsLink);
