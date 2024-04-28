@@ -113,7 +113,6 @@ inputs.forEach((input) => {
       break;
   }
 });
-
 const emailInput = document.getElementById("email_input");
 const passwordInput = document.getElementById("password_input");
 
