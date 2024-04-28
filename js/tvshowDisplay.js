@@ -152,6 +152,9 @@ const renderPagination = () => {
         tvsContainer.innerHTML = "";
         try {
           const tvs = await fetchApiTvs();
+          const tvsTitles = tvs.map((tv) => tv.name);
+          autocomplete(searchBar, tvsTitles);
+
           totalPages = tvs.pop();
           currentPage = tvs.pop();
           tvs.forEach((tv) => {
@@ -171,8 +174,6 @@ const renderPagination = () => {
           const tvsCard = createTvsCard(tv);
           tvsContainer.appendChild(tvsCard);
         });
-        const tvsTitles = tvs.map((tv) => tv.name);
-        autocomplete(searchBar, tvsTitles);
       }
     });
     document

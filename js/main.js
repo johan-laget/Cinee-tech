@@ -116,13 +116,11 @@ fetchApiMovies()
       movieLikeIcon.classList.add("ri-heart-3-line", "card__like");
       movieLikeIcon.id = movie.id;
 
-      // Check if movie is in favorites list and set icon accordingly
       if (movieFavorites.includes(movie.id)) {
         movieLikeIcon.classList.add("ri-heart-fill");
       }
 
       movieLikeIcon.addEventListener("click", () => {
-        // Toggle favorite status and update local storage
         if (!selectedProfile) {
           alert("Veuillez sélectionner un profil.");
           return;
@@ -144,7 +142,6 @@ fetchApiMovies()
         );
       });
 
-      // Append elements
       movieLink.appendChild(movieImg);
       movieLink.appendChild(movieShadow);
       movieLink.appendChild(movieLikeIcon);
@@ -174,7 +171,6 @@ fetchTvsGenres()
 
 fetchApiTvs()
   .then((Tvs) => {
-    // Retrieve favorites list from local storage
     const selectedProfile = localStorage.getItem("currentProfile");
     let tvFavorites =
       JSON.parse(localStorage.getItem(`${selectedProfile}_tvFavorites`)) || [];
@@ -182,7 +178,6 @@ fetchApiTvs()
     Tvs.pop();
     Tvs.pop();
     Tvs.forEach((tvs) => {
-      // Create elements
       const tvsArticle = document.createElement("article");
       tvsArticle.className = "new__card card__article swiper-slide";
 
