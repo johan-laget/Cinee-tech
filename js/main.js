@@ -106,6 +106,9 @@ fetchApiMovies()
 
       const movieShadow = document.createElement("div");
       movieShadow.classList.add("card__shadow");
+      movieShadow.addEventListener("click", () => {
+        createModal(movie);
+      });
 
       const movieLikeIcon = document.createElement("i");
       movieLikeIcon.classList.add("ri-heart-3-line", "card__like");
@@ -172,7 +175,7 @@ fetchApiTvs()
 
     Tvs.pop();
     Tvs.pop();
-    Tvs.forEach((tvs, index) => {
+    Tvs.forEach((tvs) => {
       // Create elements
       const tvsArticle = document.createElement("article");
       tvsArticle.className = "new__card card__article swiper-slide";
@@ -187,6 +190,9 @@ fetchApiTvs()
 
       const tvsShadow = document.createElement("div");
       tvsShadow.classList.add("card__shadow");
+      tvsShadow.addEventListener("click", () => {
+        createModal(tvs);
+      });
 
       const tvsLikeIcon = document.createElement("i");
       tvsLikeIcon.classList.add("ri-heart-3-line", "card__like");
