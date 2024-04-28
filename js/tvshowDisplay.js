@@ -1,7 +1,9 @@
 const tvsContainer = document.getElementById("tvshow-container");
 const searchBar = document.getElementById("searchbar");
+const selectedProfile = localStorage.getItem("currentProfile");
+let tvFavorites =
+  JSON.parse(localStorage.getItem(`${selectedProfile}_tvFavorites`)) || [];
 let genres;
-let autoCompletion;
 let totalPages;
 let currentPage;
 
@@ -46,6 +48,35 @@ const createTvsCard = (tvs) => {
 
   const cardLikeIcon = document.createElement("i");
   cardLikeIcon.classList.add("ri-heart-3-line", "card__like");
+  cardLikeIcon.id = tvs.id;
+
+  // Check if TV show is in favorites list and set icon accordingly
+  if (tvFavorites.includes(tvs.id)) {
+    cardLikeIcon.classList.add("ri-heart-fill");
+  }
+
+  cardLikeIcon.addEventListener("click", () => {
+    // Toggle favorite status and update local storage
+    if (!selectedProfile) {
+      alert("Veuillez sélectionner un profil.");
+      return;
+    }
+    const tvsId = tvs.id;
+    const tvsIndex = tvFavorites.indexOf(tvsId);
+    if (tvsIndex === -1) {
+      tvFavorites.push(tvsId);
+      cardLikeIcon.classList.add("ri-heart-fill");
+      alert("Série ajoutée aux favoris.");
+    } else {
+      tvFavorites.splice(tvsIndex, 1);
+      cardLikeIcon.classList.remove("ri-heart-fill");
+      alert("Série supprimée des favoris.");
+    }
+    localStorage.setItem(
+      `${selectedProfile}_tvFavorites`,
+      JSON.stringify(tvFavorites)
+    );
+  });
 
   cardLink.appendChild(cardImg);
   cardLink.appendChild(cardShadow);

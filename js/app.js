@@ -1,9 +1,6 @@
 const apiKey = "8c4b867188ee47a1d4e40854b27391ec";
 const baseImgUrl = "https://image.tmdb.org/t/p/w400";
 
-const currentProfile = localStorage.getItem("currentProfile");
-console.log(currentProfile);
-
 /**
  * Retrieves a guest session token from the MovieDB API.
  * @returns {Promise<Object>} The guest session token data received from the MovieDB API.
@@ -325,6 +322,9 @@ function autocomplete(inp, arr) {
   });
 }
 const createModal = (movie) => {
+  // Retrieve current profile from local storage
+  const currentProfile = localStorage.getItem("currentProfile") || "Anonymous";
+
   const modalHTML = `
     <div class="modal-backdrop">
       <div class="modal-content">
@@ -333,6 +333,10 @@ const createModal = (movie) => {
           movie.title !== undefined ? movie.title : movie.name
         }</h2>
         <p class="modal-description">${movie.overview}</p>
+        <div class="modal-comments-container">
+          <h3>Comments</h3>
+          <ul class="modal-comments-list"></ul>
+        </div>
         <p class="modal-commantaire">Commentaire:</p>
         <textarea class="modal-comment-box" placeholder="Ajoutez votre commentaire ici..."></textarea>
         <button class="modal-submit-comment">Soumettre</button>
@@ -363,6 +367,50 @@ const createModal = (movie) => {
   const submitCommentButton = document.querySelector(".modal-submit-comment");
   submitCommentButton.addEventListener("click", () => {
     const commentBox = document.querySelector(".modal-comment-box");
-    console.log("Commentaire soumis : " + commentBox.value);
+    const comment = commentBox.value.trim();
+    if (comment !== "") {
+      addComment(movie.id, comment, currentProfile);
+      commentBox.value = ""; // Clear the comment box after submitting
+    }
   });
+
+  // Function to add comment to local storage and list
+  function addComment(movieId, comment, profile) {
+    // Get existing comments for the movie from local storage
+    let movieComments = localStorage.getItem(`movieComments_${movieId}`);
+    movieComments = movieComments ? JSON.parse(movieComments) : [];
+
+    // Add the new comment with profile info
+    const commentWithProfile = { comment, profile };
+    movieComments.push(commentWithProfile);
+
+    // Update local storage with the new comments
+    localStorage.setItem(
+      `movieComments_${movieId}`,
+      JSON.stringify(movieComments)
+    );
+
+    // Update the comments list
+    renderComments(movieId);
+  }
+
+  // Function to render comments from local storage
+  function renderComments(movieId) {
+    const commentList = document.querySelector(".modal-comments-list");
+    commentList.innerHTML = ""; // Clear existing comments
+
+    // Retrieve comments for the movie from local storage
+    let movieComments = localStorage.getItem(`movieComments_${movieId}`);
+    movieComments = movieComments ? JSON.parse(movieComments) : [];
+
+    // Add each comment to the list
+    movieComments.forEach((commentObj) => {
+      const li = document.createElement("li");
+      li.textContent = `${commentObj.profile}: ${commentObj.comment}`;
+      commentList.appendChild(li);
+    });
+  }
+
+  // Call renderComments when modal is created to display existing comments for this movie
+  renderComments(movie.id);
 };

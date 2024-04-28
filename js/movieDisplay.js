@@ -1,7 +1,9 @@
 const movieContainer = document.getElementById("movie-container");
 const searchBar = document.getElementById("searchbar");
+const selectedProfile = localStorage.getItem("currentProfile");
+let movieFavorites =
+  JSON.parse(localStorage.getItem(`${selectedProfile}_movieFavorites`)) || [];
 let genres;
-let autoCompletion;
 let totalPages;
 let currentPage;
 
@@ -42,9 +44,34 @@ const createMovieCard = (movie) => {
 
   const cardLikeIcon = document.createElement("i");
   cardLikeIcon.classList.add("ri-heart-3-line", "card__like");
+  cardLikeIcon.id = movie.id;
+  if (movieFavorites.includes(movie.id)) {
+    cardLikeIcon.classList.add("ri-heart-fill");
+  }
+
+  cardLikeIcon.addEventListener("click", () => {
+    if (!selectedProfile) {
+      alert("Veuillez sélectionner un profil.");
+      return;
+    }
+    const movieId = movie.id;
+    const movieIndex = movieFavorites.indexOf(movieId);
+    if (movieIndex === -1) {
+      movieFavorites.push(movieId);
+      cardLikeIcon.classList.add("ri-heart-fill");
+      alert("Film ajouté aux favoris.");
+    } else {
+      movieFavorites.splice(movieIndex, 1);
+      cardLikeIcon.classList.remove("ri-heart-fill");
+      alert("Film supprimé des favoris.");
+    }
+    localStorage.setItem(
+      `${selectedProfile}_movieFavorites`,
+      JSON.stringify(movieFavorites)
+    );
+  });
 
   cardShadow.addEventListener("click", () => {
-    console.log(movie);
     createModal(movie);
   });
 

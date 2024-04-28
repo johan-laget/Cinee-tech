@@ -87,7 +87,9 @@ fetchApiMovies()
   .then((movies) => {
     // Retrieve favorites list from local storage
     const selectedProfile = localStorage.getItem("currentProfile");
-    const favorites = JSON.parse(localStorage.getItem(selectedProfile)) || [];
+    let movieFavorites =
+      JSON.parse(localStorage.getItem(`${selectedProfile}_movieFavorites`)) ||
+      [];
 
     movies.pop();
     movies.pop();
@@ -115,7 +117,7 @@ fetchApiMovies()
       movieLikeIcon.id = movie.id;
 
       // Check if movie is in favorites list and set icon accordingly
-      if (favorites.includes(movie.id)) {
+      if (movieFavorites.includes(movie.id)) {
         movieLikeIcon.classList.add("ri-heart-fill");
       }
 
@@ -126,17 +128,20 @@ fetchApiMovies()
           return;
         }
         const movieId = movie.id;
-        const movieIndex = favorites.indexOf(movieId);
+        const movieIndex = movieFavorites.indexOf(movieId);
         if (movieIndex === -1) {
-          favorites.push(movieId);
+          movieFavorites.push(movieId);
           movieLikeIcon.classList.add("ri-heart-fill");
           alert("Film ajouté aux favoris.");
         } else {
-          favorites.splice(movieIndex, 1);
+          movieFavorites.splice(movieIndex, 1);
           movieLikeIcon.classList.remove("ri-heart-fill");
           alert("Film supprimé des favoris.");
         }
-        localStorage.setItem(selectedProfile, JSON.stringify(favorites));
+        localStorage.setItem(
+          `${selectedProfile}_movieFavorites`,
+          JSON.stringify(movieFavorites)
+        );
       });
 
       // Append elements
@@ -171,7 +176,8 @@ fetchApiTvs()
   .then((Tvs) => {
     // Retrieve favorites list from local storage
     const selectedProfile = localStorage.getItem("currentProfile");
-    const favorites = JSON.parse(localStorage.getItem(selectedProfile)) || [];
+    let tvFavorites =
+      JSON.parse(localStorage.getItem(`${selectedProfile}_tvFavorites`)) || [];
 
     Tvs.pop();
     Tvs.pop();
@@ -199,7 +205,7 @@ fetchApiTvs()
       tvsLikeIcon.id = tvs.id;
 
       // Check if TV show is in favorites list and set icon accordingly
-      if (favorites.includes(tvs.id)) {
+      if (tvFavorites.includes(tvs.id)) {
         tvsLikeIcon.classList.add("ri-heart-fill");
       }
 
@@ -210,17 +216,20 @@ fetchApiTvs()
           return;
         }
         const tvsId = tvs.id;
-        const tvsIndex = favorites.indexOf(tvsId);
+        const tvsIndex = tvFavorites.indexOf(tvsId);
         if (tvsIndex === -1) {
-          favorites.push(tvsId);
+          tvFavorites.push(tvsId);
           tvsLikeIcon.classList.add("ri-heart-fill");
           alert("Série ajoutée aux favoris.");
         } else {
-          favorites.splice(tvsIndex, 1);
+          tvFavorites.splice(tvsIndex, 1);
           tvsLikeIcon.classList.remove("ri-heart-fill");
           alert("Série supprimée des favoris.");
         }
-        localStorage.setItem(selectedProfile, JSON.stringify(favorites));
+        localStorage.setItem(
+          `${selectedProfile}_tvFavorites`,
+          JSON.stringify(tvFavorites)
+        );
       });
 
       // Append elements
