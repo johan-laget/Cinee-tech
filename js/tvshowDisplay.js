@@ -111,57 +111,82 @@ const renderPagination = () => {
       button.dataset.page = i;
       paginationContainer.appendChild(button);
     }
-    document.querySelector("#pagination").addEventListener("click", (event) => {
-      if (event.target.tagName === "BUTTON") {
-        const page = parseInt(event.target.dataset.page);
-        currentPage = page;
-        if (!isNaN(page)) {
-          fetchApiTvs(page)
-            .then((tvs) => {
-              totalPages = tvs.pop();
-              currentPage = tvs.pop();
-              tvsContainer.innerHTML = "";
-              tvs.forEach((tv) => {
-                const tvsCard = createTvsCard(tv);
-                tvsContainer.appendChild(tvsCard);
-              });
-              renderPagination();
-            })
-            .catch((error) => {
-              console.error("Error fetching tv shows: ", error);
-            });
-        }
-      }
-    });
 
-    searchBar.addEventListener("keyup", (event) => {
-      if (searchBar.value === "") {
+    searchBar.addEventListener("keyup", async (event) => {
+      const searchTerm = event.target.value.trim();
+      if (!searchTerm) {
         tvsContainer.innerHTML = "";
-        fetchApiTvs()
-          .then((tvs) => {
-            tvs.forEach((tv) => {
-              const tvsCard = createTvsCard(tv);
-              tvsContainer.appendChild(tvsCard);
-            });
-          })
-          .catch((error) => {
-            console.error("Error fetching Tv shows: ", error);
+        try {
+          const tvs = await fetchApiTvs();
+          totalPages = tvs.pop();
+          currentPage = tvs.pop();
+          tvs.forEach((tv) => {
+            const tvsCard = createTvsCard(tv);
+            tvsContainer.appendChild(tvsCard);
           });
+          renderPagination();
+        } catch (error) {
+          console.error("Error fetching tv shows: ", error);
+        }
       } else {
+        const tvs = await fetchTvsByTitle(searchTerm);
+        tvs.pop();
+        tvs.pop();
         tvsContainer.innerHTML = "";
-        let searchTerm = searchBar.value;
-        fetchTvsByTitle(searchTerm)
-          .then((tvs) => {
-            tvs.forEach((tv) => {
-              const tvsCard = createTvsCard(tv);
-              tvsContainer.appendChild(tvsCard);
-            });
-          })
-          .catch((error) => {
-            console.error("Error fetching tv shows: ", error);
-          });
+        tvs.forEach((tv) => {
+          const tvsCard = createTvsCard(tv);
+          tvsContainer.appendChild(tvsCard);
+        });
+        const tvsTitles = tvs.map((tv) => tv.name);
+        autocomplete(searchBar, tvsTitles);
       }
     });
+    document
+      .querySelector("#pagination")
+      .addEventListener("click", async (event) => {
+        if (searchBar.value.trim() !== "") {
+          if (event.target.tagName === "BUTTON") {
+            const page = parseInt(event.target.dataset.page);
+            currentPage = page;
+            if (!isNaN(page)) {
+              try {
+                const searchTerm = searchBar.value.trim();
+                const tvs = await fetchTvsByTitle(searchTerm, page);
+                totalPages = tvs.pop();
+                currentPage = tvs.pop();
+                tvsContainer.innerHTML = "";
+                tvs.forEach((tv) => {
+                  const tvsCard = createTvsCard(tv);
+                  tvsContainer.appendChild(tvsCard);
+                });
+                renderPagination();
+              } catch (error) {
+                console.log("Error fetching tv shows: ", error);
+              }
+            }
+          }
+        } else {
+          if (event.target.tagName === "BUTTON") {
+            const page = parseInt(event.target.dataset.page);
+            currentPage = page;
+            if (!isNaN(page)) {
+              try {
+                const tvs = await fetchApiTvs(page);
+                totalPages = tvs.pop();
+                currentPage = tvs.pop();
+                tvsContainer.innerHTML = "";
+                tvs.forEach((tv) => {
+                  const tvsCard = createTvsCard(tv);
+                  tvsContainer.appendChild(tvsCard);
+                });
+                renderPagination();
+              } catch (error) {
+                console.log("Error fetching tv shows: ", error);
+              }
+            }
+          }
+        }
+      });
   } catch (error) {
     console.error("Error fetching genres: ", error);
   }

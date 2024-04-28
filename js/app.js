@@ -101,8 +101,8 @@ const fetchVideoMovies = async () => {
  * @param {string} searchTerm - The term to search for movies.
  * @returns {Promise<Array>} - An array of movie objects that match the search term. If there is an error during the API request, an empty array is returned.
  */
-const fetchMoviesByTitle = async (searchTerm) => {
-  const url = `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&include_adult=false&language=fr&page=1&api_key=${apiKey}`;
+const fetchMoviesByTitle = async (searchTerm, page = 1) => {
+  const url = `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&include_adult=false&language=fr&page=${page}&api_key=${apiKey}`;
 
   try {
     const response = await fetch(url);
@@ -110,6 +110,8 @@ const fetchMoviesByTitle = async (searchTerm) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
+    data.results.push(data.page);
+    data.results.push(data.total_pages);
     return data.results;
   } catch (error) {
     console.error("Error fetching data: ", error);
@@ -202,14 +204,16 @@ const fetchTvsById = async (id) => {
  * @param {string} searchTerm - The term to search for tv shows.
  * @returns {Promise<Array>} - An array of tv shows objects that match the search term. If there is an error during the API request, an empty array is returned.
  */
-const fetchTvsByTitle = async (searchTerm) => {
-  const url = `https://api.themoviedb.org/3/search/tv?query=${searchTerm}&include_adult=false&language=fr&page=1&api_key=${apiKey}`;
+const fetchTvsByTitle = async (searchTerm, page = 1) => {
+  const url = `https://api.themoviedb.org/3/search/tv?query=${searchTerm}&include_adult=false&language=fr&page=${page}&api_key=${apiKey}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
+    data.results.push(data.page);
+    data.results.push(data.total_pages);
     return data.results;
   } catch (error) {
     console.error("Error fetching data: ", error);

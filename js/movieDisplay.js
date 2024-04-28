@@ -147,59 +147,84 @@ const renderPagination = () => {
       button.dataset.page = i;
       paginationContainer.appendChild(button);
     }
-    document.querySelector("#pagination").addEventListener("click", (event) => {
-      if (event.target.tagName === "BUTTON") {
-        const page = parseInt(event.target.dataset.page);
-        currentPage = page;
-        if (!isNaN(page)) {
-          fetchApiMovies(page)
-            .then((movies) => {
-              totalPages = movies.pop();
-              currentPage = movies.pop();
-              movieContainer.innerHTML = "";
-              movies.forEach((movie) => {
-                const movieCard = createMovieCard(movie);
-                movieContainer.appendChild(movieCard);
-              });
-              renderPagination();
-            })
-            .catch((error) => {
-              console.error("Error fetching movies: ", error);
-            });
+
+    searchBar.addEventListener("keyup", async (event) => {
+      const searchTerm = event.target.value.trim();
+      if (!searchTerm) {
+        movieContainer.innerHTML = "";
+        try {
+          const movies = await fetchApiMovies();
+          totalPages = movies.pop();
+          currentPage = movies.pop();
+          movies.forEach((movie) => {
+            const movieCard = createMovieCard(movie);
+            movieContainer.appendChild(movieCard);
+          });
+          renderPagination();
+        } catch (error) {
+          console.error("Error fetching movies: ", error);
+        }
+      } else {
+        try {
+          const movies = await fetchMoviesByTitle(searchTerm);
+          movieContainer.innerHTML = "";
+          movies.forEach((movie) => {
+            const movieCard = createMovieCard(movie);
+            movieContainer.appendChild(movieCard);
+          });
+          const movieTitles = movies.map((movie) => movie.title);
+          autocomplete(searchBar, movieTitles);
+        } catch (error) {
+          console.error("Error fetching movies by title: ", error);
         }
       }
     });
-
-    searchBar.addEventListener("keyup", (event) => {
-      if (searchBar.value === "") {
-        movieContainer.innerHTML = "";
-        fetchApiMovies()
-          .then((movies) => {
-            movies.forEach((movie) => {
-              // Create card for each movie
-              const movieCard = createMovieCard(movie);
-              // Append the card to the container
-              movieContainer.appendChild(movieCard);
-            });
-          })
-          .catch((error) => {
-            console.error("Error fetching movies: ", error);
-          });
-      } else {
-        movieContainer.innerHTML = "";
-        let searchTerm = searchBar.value;
-        fetchMoviesByTitle(searchTerm)
-          .then((movies) => {
-            movies.forEach((movie) => {
-              const movieCard = createMovieCard(movie);
-              movieContainer.appendChild(movieCard);
-            });
-          })
-          .catch((error) => {
-            console.error("Error fetching movies: ", error);
-          });
-      }
-    });
+    document
+      .querySelector("#pagination")
+      .addEventListener("click", async (event) => {
+        if (searchBar.value.trim() !== "") {
+          if (event.target.tagName === "BUTTON") {
+            const page = parseInt(event.target.dataset.page);
+            currentPage = page;
+            if (!isNaN(page)) {
+              try {
+                const searchTerm = searchBar.value.trim();
+                const movies = await fetchMoviesByTitle(searchTerm, page);
+                totalPages = movies.pop();
+                currentPage = movies.pop();
+                movieContainer.innerHTML = "";
+                movies.forEach((movie) => {
+                  const movieCard = createMovieCard(movie);
+                  movieContainer.appendChild(movieCard);
+                });
+                renderPagination();
+              } catch (error) {
+                console.error("Error fetching movies: ", error);
+              }
+            }
+          }
+        } else {
+          if (event.target.tagName === "BUTTON") {
+            const page = parseInt(event.target.dataset.page);
+            currentPage = page;
+            if (!isNaN(page)) {
+              try {
+                const movies = await fetchApiMovies(page);
+                totalPages = movies.pop();
+                currentPage = movies.pop();
+                movieContainer.innerHTML = "";
+                movies.forEach((movie) => {
+                  const movieCard = createMovieCard(movie);
+                  movieContainer.appendChild(movieCard);
+                });
+                renderPagination();
+              } catch (error) {
+                console.error("Error fetching movies: ", error);
+              }
+            }
+          }
+        }
+      });
   } catch (error) {
     console.error("Error fetching genres: ", error);
   }
