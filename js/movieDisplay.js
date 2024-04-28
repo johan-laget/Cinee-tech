@@ -23,46 +23,6 @@ if (navClose) {
     nav.classList.remove("show-menu");
   });
 }
-const createModal = (movie) => {
-  const modalHTML = `
-    <div class="modal-backdrop">
-      <div class="modal-content">
-        <span class="modal-close-btn">&times;</span>
-        <h2 class="modal-title">${movie.title}</h2>
-        <p class="modal-description">${movie.overview}</p>
-        <p class="modal-commantaire">Commentaire:</p>
-        <textarea class="modal-comment-box" placeholder="Ajoutez votre commentaire ici..."></textarea>
-        <button class="modal-submit-comment">Soumettre</button>
-      </div>
-    </div>
-  `;
-
-  const modalElement = document.createElement("div");
-  modalElement.innerHTML = modalHTML;
-
-  document.body.appendChild(modalElement);
-
-  const modalBackdrop = document.querySelector(".modal-backdrop");
-  const closeModalBtn = document.querySelector(".modal-close-btn");
-  closeModalBtn.addEventListener("click", () => {
-    document.body.removeChild(modalElement);
-  });
-
-  const modalContent = document.querySelector(".modal-content");
-  modalContent.addEventListener("click", (event) => {
-    event.stopPropagation();
-  });
-
-  modalBackdrop.addEventListener("click", () => {
-    document.body.removeChild(modalBackdrop);
-  });
-
-  const submitCommentButton = document.querySelector(".modal-submit-comment");
-  submitCommentButton.addEventListener("click", () => {
-    const commentBox = document.querySelector(".modal-comment-box");
-    console.log("Commentaire soumis : " + commentBox.value);
-  });
-};
 
 const createMovieCard = (movie) => {
   const cardArticle = document.createElement("article");
@@ -84,7 +44,7 @@ const createMovieCard = (movie) => {
   cardLikeIcon.classList.add("ri-heart-3-line", "card__like");
 
   cardShadow.addEventListener("click", () => {
-    console.log("hello");
+    console.log(movie);
     createModal(movie);
   });
 

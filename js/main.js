@@ -56,34 +56,6 @@ let swiperTvShows = new Swiper(".tvs__swiper", {
   },
 });
 
-/*=============== SWIPER NEW ===============*/
-// let swiperNew = new Swiper(".new__swiper", {
-//   loop: true,
-//   grabCursor: true,
-//   centeredSlides: true,
-//   slidesPerView: 2,
-
-//   pagination: {
-//     el: ".swiper-pagination",
-//     clickable: true,
-//   },
-
-//   breakpoints: {
-//     440: {
-//       centeredSlides: false,
-//       slidesPerView: "auto",
-//     },
-//     768: {
-//       centeredSlides: false,
-//       slidesPerView: 4,
-//     },
-//     1200: {
-//       centeredSlides: false,
-//       slidesPerView: 5,
-//     },
-//   },
-// });
-
 /*=============== ADD BLUR HEADER ===============*/
 const blurHeader = () => {
   const header = document.getElementById("header");
@@ -113,6 +85,10 @@ fetchMovieGenres()
 
 fetchApiMovies()
   .then((movies) => {
+    // Retrieve favorites list from local storage
+    const selectedProfile = localStorage.getItem("currentProfile");
+    const favorites = JSON.parse(localStorage.getItem(selectedProfile)) || [];
+
     movies.pop();
     movies.pop();
     movies.forEach((movie) => {
@@ -133,9 +109,34 @@ fetchApiMovies()
 
       const movieLikeIcon = document.createElement("i");
       movieLikeIcon.classList.add("ri-heart-3-line", "card__like");
+      movieLikeIcon.id = movie.id;
+
+      // Check if movie is in favorites list and set icon accordingly
+      if (favorites.includes(movie.id)) {
+        movieLikeIcon.classList.add("ri-heart-fill");
+      }
+
+      movieLikeIcon.addEventListener("click", () => {
+        // Toggle favorite status and update local storage
+        if (!selectedProfile) {
+          alert("Veuillez sélectionner un profil.");
+          return;
+        }
+        const movieId = movie.id;
+        const movieIndex = favorites.indexOf(movieId);
+        if (movieIndex === -1) {
+          favorites.push(movieId);
+          movieLikeIcon.classList.add("ri-heart-fill");
+          alert("Film ajouté aux favoris.");
+        } else {
+          favorites.splice(movieIndex, 1);
+          movieLikeIcon.classList.remove("ri-heart-fill");
+          alert("Film supprimé des favoris.");
+        }
+        localStorage.setItem(selectedProfile, JSON.stringify(favorites));
+      });
 
       // Append elements
-
       movieLink.appendChild(movieImg);
       movieLink.appendChild(movieShadow);
       movieLink.appendChild(movieLikeIcon);
@@ -149,9 +150,7 @@ fetchApiMovies()
     console.error("Error occurred: ", error);
   });
 
-fetchVideoMovies().then((video) => {
-  console.log(video);
-});
+fetchVideoMovies().then((video) => {});
 
 fetchTvsGenres()
   .then((genres) => {
@@ -167,6 +166,10 @@ fetchTvsGenres()
 
 fetchApiTvs()
   .then((Tvs) => {
+    // Retrieve favorites list from local storage
+    const selectedProfile = localStorage.getItem("currentProfile");
+    const favorites = JSON.parse(localStorage.getItem(selectedProfile)) || [];
+
     Tvs.pop();
     Tvs.pop();
     Tvs.forEach((tvs, index) => {
@@ -187,7 +190,34 @@ fetchApiTvs()
 
       const tvsLikeIcon = document.createElement("i");
       tvsLikeIcon.classList.add("ri-heart-3-line", "card__like");
+      tvsLikeIcon.id = tvs.id;
 
+      // Check if TV show is in favorites list and set icon accordingly
+      if (favorites.includes(tvs.id)) {
+        tvsLikeIcon.classList.add("ri-heart-fill");
+      }
+
+      tvsLikeIcon.addEventListener("click", () => {
+        // Toggle favorite status and update local storage
+        if (!selectedProfile) {
+          alert("Veuillez sélectionner un profil.");
+          return;
+        }
+        const tvsId = tvs.id;
+        const tvsIndex = favorites.indexOf(tvsId);
+        if (tvsIndex === -1) {
+          favorites.push(tvsId);
+          tvsLikeIcon.classList.add("ri-heart-fill");
+          alert("Série ajoutée aux favoris.");
+        } else {
+          favorites.splice(tvsIndex, 1);
+          tvsLikeIcon.classList.remove("ri-heart-fill");
+          alert("Série supprimée des favoris.");
+        }
+        localStorage.setItem(selectedProfile, JSON.stringify(favorites));
+      });
+
+      // Append elements
       tvsLink.appendChild(tvsImg);
       tvsLink.appendChild(tvsShadow);
       tvsLink.appendChild(tvsLikeIcon);

@@ -40,6 +40,9 @@ const createTvsCard = (tvs) => {
 
   const cardShadow = document.createElement("div");
   cardShadow.classList.add("card__shadow");
+  cardShadow.addEventListener("click", () => {
+    createModal(tvs);
+  });
 
   const cardLikeIcon = document.createElement("i");
   cardLikeIcon.classList.add("ri-heart-3-line", "card__like");

@@ -1,6 +1,9 @@
 const apiKey = "8c4b867188ee47a1d4e40854b27391ec";
 const baseImgUrl = "https://image.tmdb.org/t/p/w400";
 
+const currentProfile = localStorage.getItem("currentProfile");
+console.log(currentProfile);
+
 /**
  * Retrieves a guest session token from the MovieDB API.
  * @returns {Promise<Object>} The guest session token data received from the MovieDB API.
@@ -79,7 +82,6 @@ const fetchUpcomingMovies = async () => {
 
 const fetchVideoMovies = async () => {
   const movies = await fetchUpcomingMovies();
-  console.log(movies);
   const id = movies[0].id;
   const url = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}&language=fr-FR
   `;
@@ -322,3 +324,45 @@ function autocomplete(inp, arr) {
     closeAllLists(e.target);
   });
 }
+const createModal = (movie) => {
+  const modalHTML = `
+    <div class="modal-backdrop">
+      <div class="modal-content">
+        <span class="modal-close-btn">&times;</span>
+        <h2 class="modal-title">${
+          movie.title !== undefined ? movie.title : movie.name
+        }</h2>
+        <p class="modal-description">${movie.overview}</p>
+        <p class="modal-commantaire">Commentaire:</p>
+        <textarea class="modal-comment-box" placeholder="Ajoutez votre commentaire ici..."></textarea>
+        <button class="modal-submit-comment">Soumettre</button>
+      </div>
+    </div>
+  `;
+
+  const modalElement = document.createElement("div");
+  modalElement.innerHTML = modalHTML;
+
+  document.body.appendChild(modalElement);
+
+  const modalBackdrop = document.querySelector(".modal-backdrop");
+  const closeModalBtn = document.querySelector(".modal-close-btn");
+  closeModalBtn.addEventListener("click", () => {
+    document.body.removeChild(modalElement);
+  });
+
+  const modalContent = document.querySelector(".modal-content");
+  modalContent.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  modalBackdrop.addEventListener("click", () => {
+    document.body.removeChild(modalBackdrop);
+  });
+
+  const submitCommentButton = document.querySelector(".modal-submit-comment");
+  submitCommentButton.addEventListener("click", () => {
+    const commentBox = document.querySelector(".modal-comment-box");
+    console.log("Commentaire soumis : " + commentBox.value);
+  });
+};

@@ -64,6 +64,7 @@ button {
 body {
   color: var(--white-color);
   background-color: rgb(23, 23, 23);
+  overflow-x: hidden;
 }
 
 input,

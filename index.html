@@ -17,18 +17,17 @@
 <body>
    <main class="main">
       <section class="section__profile">
-
-         <div class="card__profile">
-            <a href="./home.html">
-               <img class="profile__img" src="
-         
-      https://api.dicebear.com/8.x/lorelei/svg?flip=false" alt="">
-               <p class="profile__name">test</p>
-            </a>
-         </div>
-      </section>
+         <form id="profileForm">
+             <label for="profileName">Nom de profil :</label>
+             <input type="text" id="profileName" name="profileName" required>
+             <button type="submit">Créer le profil</button>
+         </form>
+     
+         <div id="profilesContainer" class="profiles-container"></div>
+     </section>
    </main>
    <!--=============== MAIN JS ===============-->
+   <script src="./js/index.js"></script>
 </body>
 
 </html>
