@@ -35,9 +35,11 @@
          </div>
       </div>
 
-      <form action="" class="header__search">
-         <i class="ri-search-line"></i>
-         <input type="search" placeholder="Rechercher un film..." class="header__input" id="searchbar">
+      <form autocomplete="off" class="header__search" id="searchForm">
+         <div class="autocomplete" style="width: 300px;display: flex; align-items: center;">
+            <i class="ri-search-line"></i>
+            <input type="search" type="text" placeholder="Rechercher un film..." class="header__input" id="searchbar">
+         </div>
       </form>
    </header>
 

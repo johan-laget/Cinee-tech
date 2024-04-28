@@ -87,7 +87,6 @@ const createMovieCard = (movie) => {
     console.log("hello");
     createModal(movie);
   });
-  console.log("card create");
 
   cardLink.appendChild(cardImg);
   cardLink.appendChild(cardShadow);
@@ -101,9 +100,7 @@ const renderPagination = () => {
   const paginationContainer = document.querySelector("#pagination");
   paginationContainer.innerHTML = "";
 
-  // Calculate the starting page number for the previous three pages
   const startPagePrev = Math.max(currentPage - 3, 1);
-  // Calculate the ending page number for the previous three pages
   const endPagePrev = Math.min(currentPage - 1, totalPages);
 
   for (let i = startPagePrev; i <= endPagePrev; i++) {
@@ -112,16 +109,13 @@ const renderPagination = () => {
     button.dataset.page = i;
     paginationContainer.appendChild(button);
   }
-  // Create button for current page
   const currentButton = document.createElement("button");
   currentButton.textContent = currentPage;
   currentButton.dataset.page = currentPage;
   currentButton.classList.add("active");
   paginationContainer.appendChild(currentButton);
 
-  // Calculate the starting page number for the next three pages
   const startPageNext = currentPage + 1;
-  // Calculate the ending page number for the next three pages
   const endPageNext = Math.min(currentPage + 3, totalPages);
 
   for (let i = startPageNext; i <= endPageNext; i++) {
