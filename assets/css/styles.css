@@ -452,6 +452,9 @@ img {
 .delete-comment-btn:hover {
   color: red; /* Change to the appropriate color for your design */
 }
+.delete-comment-btn i {
+  margin-left: 10px;
+}
 
 /*=============== MOVIES ===============*/
 .movie {

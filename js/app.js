@@ -348,14 +348,7 @@ const createModal = (movie) => {
   });
 
   modalBackdrop.addEventListener("click", () => {
-    console.log("Removing");
     document.body.removeChild(modalElement);
-    if (document.body.contains(modalBackdrop)) {
-      document.body.removeChild(modalBackdrop);
-      console.log("modalBackdrop removed");
-    } else {
-      console.log("modalBackdrop is not a child of the document body.");
-    }
   });
 
   const submitCommentButton = document.querySelector(".modal-submit-comment");
