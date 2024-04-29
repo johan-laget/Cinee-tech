@@ -348,7 +348,14 @@ const createModal = (movie) => {
   });
 
   modalBackdrop.addEventListener("click", () => {
-    document.body.removeChild(modalBackdrop);
+    console.log("Removing");
+    document.body.removeChild(modalElement);
+    if (document.body.contains(modalBackdrop)) {
+      document.body.removeChild(modalBackdrop);
+      console.log("modalBackdrop removed");
+    } else {
+      console.log("modalBackdrop is not a child of the document body.");
+    }
   });
 
   const submitCommentButton = document.querySelector(".modal-submit-comment");
@@ -391,9 +398,23 @@ const createModal = (movie) => {
     movieComments = movieComments ? JSON.parse(movieComments) : [];
 
     // Add each comment to the list
-    movieComments.forEach((commentObj) => {
+    movieComments.forEach((commentObj, index) => {
       const li = document.createElement("li");
+      const deleteButton = document.createElement("button");
+      deleteButton.innerHTML = '<i class="ri-delete-bin-line"></i>'; // Icon for delete button
+      deleteButton.classList.add("delete-comment-btn");
+      deleteButton.addEventListener("click", () => {
+        // Remove comment from local storage
+        movieComments.splice(index, 1);
+        localStorage.setItem(
+          `movieComments_${movieId}`,
+          JSON.stringify(movieComments)
+        );
+        // Remove comment from UI
+        commentList.removeChild(li);
+      });
       li.textContent = `${commentObj.profile}: ${commentObj.comment}`;
+      li.appendChild(deleteButton);
       commentList.appendChild(li);
     });
   }

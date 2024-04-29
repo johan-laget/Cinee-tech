@@ -152,6 +152,7 @@ const renderPagination = () => {
         tvsContainer.innerHTML = "";
         try {
           const tvs = await fetchApiTvs();
+
           const tvsTitles = tvs.map((tv) => tv.name);
           autocomplete(searchBar, tvsTitles);
 

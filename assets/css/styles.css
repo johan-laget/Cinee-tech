@@ -442,6 +442,16 @@ img {
   background-color: transparent;
   color: white;
 }
+.delete-comment-btn {
+  background-color: transparent;
+  border: none;
+  color: white; /* Change to the appropriate color for your design */
+  cursor: pointer;
+}
+
+.delete-comment-btn:hover {
+  color: red; /* Change to the appropriate color for your design */
+}
 
 /*=============== MOVIES ===============*/
 .movie {
